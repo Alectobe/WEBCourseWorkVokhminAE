@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Динамическое добавление полей</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .form-container {
+      background: #ffffff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333333;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
+      font-size: 14px;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+      border-color: #007BFF;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .action-btn {
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      background-color: #007BFF;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .action-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 10px 15px;
+      background-color: #28a745;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Динамическая форма</h2>
+    <form id="dynamicForm">
+      <div id="fieldsContainer">
+        <div class="form-group">
+          <label for="field1">Поле 1:</label>
+          <input type="text" id="field1" placeholder="Введите значение">
+        </div>
+      </div>
+      <button type="button" id="addField" class="action-btn">Добавить поле</button>
+      <button type="submit" class="submit-btn">Отправить</button>
+    </form>
+  </div>
+
+  <script>
+    let fieldCounter = 1;
+
+    document.getElementById('addField').addEventListener('click', () => {
+      fieldCounter++;
+      const fieldsContainer = document.getElementById('fieldsContainer');
+      const newField = document.createElement('div');
+      newField.classList.add('form-group');
+      newField.innerHTML = `
+        <label for="field${fieldCounter}">Поле ${fieldCounter}:</label>
+        <input type="text" id="field${fieldCounter}" placeholder="Введите значение">
+      `;
+      fieldsContainer.appendChild(newField);
+    });
+
+    document.getElementById('dynamicForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Форма успешно отправлена!');
+    });
+  </script>
+</body>
+</html>

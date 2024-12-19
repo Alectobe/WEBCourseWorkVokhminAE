@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мгновенная валидация</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background: #ffffff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333333;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
+      font-size: 14px;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+      border-color: #007BFF;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .form-group .error-message {
+      color: #d9534f;
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .form-group .error-message.visible {
+      display: block;
+    }
+
+    .form-group input.error {
+      border-color: #d9534f;
+      box-shadow: 0 0 5px rgba(217, 83, 79, 0.5);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 10px 15px;
+      background-color: #28a745;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Форма с валидацией</h2>
+    <form id="validationForm">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Введите email">
+        <small class="error-message" id="emailError">Введите корректный адрес электронной почты.</small>
+      </div>
+      <div class="form-group">
+        <label for="phone">Телефон:</label>
+        <input type="tel" id="phone" placeholder="+7 123 456-78-90">
+        <small class="error-message" id="phoneError">Введите корректный номер телефона.</small>
+      </div>
+      <button type="submit" class="submit-btn">Отправить</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('validationForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Проверка email
+      const emailInput = document.getElementById('email');
+      const emailError = document.getElementById('emailError');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(emailInput.value)) {
+        emailInput.classList.add('error');
+        emailError.classList.add('visible');
+      } else {
+        emailInput.classList.remove('error');
+        emailError.classList.remove('visible');
+      }
+
+      // Проверка телефона
+      const phoneInput = document.getElementById('phone');
+      const phoneError = document.getElementById('phoneError');
+      const phoneRegex = /^\+?\d{1,4}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
+      if (!phoneRegex.test(phoneInput.value)) {
+        phoneInput.classList.add('error');
+        phoneError.classList.add('visible');
+      } else {
+        phoneInput.classList.remove('error');
+        phoneError.classList.remove('visible');
+      }
+
+      // Если все корректно
+      if (!document.querySelector('.error-message.visible')) {
+        alert('Форма успешно отправлена!');
+      }
+    });
+  </script>
+</body>
+</html>

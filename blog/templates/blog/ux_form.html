@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Интуитивная форма</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background: #ffffff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333333;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
+      font-size: 14px;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+      border-color: #007BFF;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .form-group .error-message {
+      color: #d9534f;
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .form-group .error-message.visible {
+      display: block;
+    }
+
+    .form-group input.error {
+      border-color: #d9534f;
+      box-shadow: 0 0 5px rgba(217, 83, 79, 0.5);
+    }
+
+    .form-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .nav-btn {
+      padding: 10px 15px;
+      background-color: #007BFF;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 10px 15px;
+      background-color: #28a745;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #218838;
+    }
+
+    .form-step {
+      display: none;
+    }
+
+    .form-step.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Регистрация</h2>
+    <form id="multiStepForm">
+      <!-- Шаг 1 -->
+      <div class="form-step active" id="step1">
+        <div class="form-group">
+          <label for="name">Имя:</label>
+          <input type="text" id="name" placeholder="Введите ваше имя">
+          <small class="error-message" id="nameError">Имя не может быть пустым.</small>
+        </div>
+        <div class="form-navigation">
+          <button type="button" class="nav-btn" id="next1">Далее</button>
+        </div>
+      </div>
+      <!-- Шаг 2 -->
+      <div class="form-step" id="step2">
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" placeholder="example@mail.com">
+          <small class="error-message" id="emailError">Введите корректный адрес электронной почты.</small>
+        </div>
+        <div class="form-navigation">
+          <button type="button" class="nav-btn" id="prev2">Назад</button>
+          <button type="button" class="nav-btn" id="next2">Далее</button>
+        </div>
+      </div>
+      <!-- Шаг 3 -->
+      <div class="form-step" id="step3">
+        <div class="form-group">
+          <label for="phone">Телефон:</label>
+          <input type="tel" id="phone" placeholder="+7 123 456-78-90">
+          <small class="error-message" id="phoneError">Введите корректный номер телефона.</small>
+        </div>
+        <div class="form-navigation">
+          <button type="button" class="nav-btn" id="prev3">Назад</button>
+          <button type="submit" class="submit-btn">Завершить</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const steps = document.querySelectorAll('.form-step');
+    let currentStep = 0;
+
+    function showStep(step) {
+      steps.forEach((s, index) => {
+        s.classList.toggle('active', index === step);
+      });
+    }
+
+    document.getElementById('next1').addEventListener('click', () => {
+      const nameInput = document.getElementById('name');
+      const nameError = document.getElementById('nameError');
+      if (nameInput.value.trim() === '') {
+        nameError.classList.add('visible');
+        nameInput.classList.add('error');
+      } else {
+        nameError.classList.remove('visible');
+        nameInput.classList.remove('error');
+        currentStep++;
+        showStep(currentStep);
+      }
+    });
+
+    document.getElementById('next2').addEventListener('click', () => {
+      const emailInput = document.getElementById('email');
+      const emailError = document.getElementById('emailError');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(emailInput.value)) {
+        emailError.classList.add('visible');
+        emailInput.classList.add('error');
+      } else {
+        emailError.classList.remove('visible');
+        emailInput.classList.remove('error');
+        currentStep++;
+        showStep(currentStep);
+      }
+    });
+
+    document.getElementById('prev2').addEventListener('click', () => {
+      currentStep--;
+      showStep(currentStep);
+    });
+
+    document.getElementById('prev3').addEventListener('click', () => {
+      currentStep--;
+      showStep(currentStep);
+    });
+
+    document.getElementById('multiStepForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const phoneInput = document.getElementById('phone');
+      const phoneError = document.getElementById('phoneError');
+      const phoneRegex = /^\+?\d{1,4}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
+      if (!phoneRegex.test(phoneInput.value)) {
+        phoneError.classList.add('visible');
+        phoneInput.classList.add('error');
+      } else {
+        phoneError.classList.remove('visible');
+        phoneInput.classList.remove('error');
+        alert('Форма успешно отправлена!');
+      }
+    });
+  </script>
+</body>
+</html>
